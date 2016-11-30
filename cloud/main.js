@@ -20,12 +20,13 @@ Parse.Cloud.define('pushRequestNotification', function(request, response) {
     },
     body: {
       notication: {
-      title: notificationTitle,
-      body: notificationBody
-    },
-    to: toUserFcmToken,
-    data: {
-      requestObjectId: requestObjectId
+        title: notificationTitle,
+        body: notificationBody
+      },
+      to: toUserFcmToken,
+      data: {
+        requestObjectId: requestObjectId
+      }
     }
   }).then(function(httpResponse) {
     console.log("### PUSH OK: " + httpResponse.text);
