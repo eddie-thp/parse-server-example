@@ -19,7 +19,7 @@ Parse.Cloud.define('pushRequestNotification', function(request, response) {
       'Content-Type': 'application/json'
     },
     body: {
-      notication: {
+      notification: {
         title: notificationTitle,
         body: notificationBody
       },
