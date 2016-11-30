@@ -8,20 +8,32 @@ Parse.Cloud.define('pushRequestNotification', function(request, response) {
   var toUserObjectId = params.toUserObjectId;
   var toUserFcmToken = params.toUserFcmToken;
   var requestObjectId = params.requestObjectId;
-  var title = params.notificationTitle;
-  var body = params.notificationBody;
+  var notificationTitle = params.notificationTitle;
+  var notificationBody = params.notificationBody;
 
   // use to custom tweak whatever payload you wish to send
   var pushQuery = new Parse.Query(Parse.Installation);
   pushQuery.equalTo("deviceType", "android");
 
-  var payload = {};
+  var payload = {
+    "notication": {
+      "title": notificationTitle,
+      "body": notificationBody
+    },
+    "to": toUserFcmToken,
+    "data": {
+      "requestObjectId": requestObjectId
+    }
+  };
+  
+  /*
   payload.notification = {};
   payload.to = toUserFcmToken;
   payload.notification.title = title;
   payload.notification.body = body;
   payload.data = {};
   payload.data.requestObjectId = requestObjectId;
+  */
  
 /*
   if (customData) {
