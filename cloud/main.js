@@ -65,6 +65,7 @@ Parse.Cloud.define('pushRequestNotification', function(request, response) {
 */
   // Note that useMasterKey is necessary for Push notifications to succeed.
 
+  /*
   Parse.Push.send({
   where: pushQuery,      // for sending to a specific channel
   data: payload,
@@ -73,6 +74,6 @@ Parse.Cloud.define('pushRequestNotification', function(request, response) {
   }, error: function(error) {
      console.log("#### PUSH ERROR" + error.message);
   }, useMasterKey: true});
-
+  */
   response.success('success');
 });
