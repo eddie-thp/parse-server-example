@@ -5,12 +5,17 @@ Parse.Cloud.define('pushRequestNotification', function(request, response) {
   var user = request.user;
   var params = request.params;
   
-  var toUserObjectId = params.toUserObjectId;
   var toUserFcmToken = params.toUserFcmToken;
-  var requestObjectId = params.requestObjectId;
-  var notificationTitle = params.notificationTitle;
-  var notificationBody = params.notificationBody;
+
+  var body = {};
+  body["to"] = toUserFcmToken;
+  body["data"] = {};
+  body["data"]["fromUserObjectId"] = user.objectId;
   
+  Object.keys(params).forEach(function(key) {
+    body["data"][key] = params[key];
+  });
+
   Parse.Cloud.httpRequest({
     method: 'POST',
     url: 'https://fcm.googleapis.com/fcm/send',
@@ -18,62 +23,13 @@ Parse.Cloud.define('pushRequestNotification', function(request, response) {
       'Authorization': 'key=' + process.env.FCM_TOKEN,
       'Content-Type': 'application/json'
     },
-    body: {
-      notification: {
-        title: notificationTitle,
-        body: notificationBody
-      },
-      to: toUserFcmToken,
-      data: {
-        requestObjectId: requestObjectId
-      }
-    }
+    body: body
   }).then(function(httpResponse) {
     console.log("### PUSH OK: " + httpResponse.text);
   }, function(httpResponse) {
     console.error('Request failed with response code ' + httpResponse.status);
     console.error('Response ' + httpResponse.text);
   });
-
-  /*
-  // use to custom tweak whatever payload you wish to send
-  var pushQuery = new Parse.Query(Parse.Installation);
-  pushQuery.equalTo("deviceType", "android");
-
-  var payload = {
-    */
   
-  /*
-  payload.notification = {};
-  payload.to = toUserFcmToken;
-  payload.notification.title = title;
-  payload.notification.body = body;
-  payload.data = {};
-  payload.data.requestObjectId = requestObjectId;
-  */
- 
-/*
-  if (customData) {
-      payload.customdata = customData;
-  }
-  else if (launch) {
-      payload.launch = launch;
-  }
-  else if (broadcast) {
-      payload.broadcast = broadcast;
-  }
-*/
-  // Note that useMasterKey is necessary for Push notifications to succeed.
-
-  /*
-  Parse.Push.send({
-  where: pushQuery,      // for sending to a specific channel
-  data: payload,
-  }, { success: function() {
-     console.log("#### PUSH OK");
-  }, error: function(error) {
-     console.log("#### PUSH ERROR" + error.message);
-  }, useMasterKey: true});
-  */
   response.success('success');
 });
