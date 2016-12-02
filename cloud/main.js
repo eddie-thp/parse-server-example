@@ -10,7 +10,9 @@ Parse.Cloud.define('pushRequestNotification', function(request, response) {
   var body = {};
   body["to"] = toUserFcmToken;
   body["data"] = {};
-  body["data"]["fromUserObjectId"] = user.objectId;
+  body["data"]["fromUserObjectId"] = user.id;
+  
+  console.log("##### User: " + user.id);
   
   Object.keys(params).forEach(function(key) {
     body["data"][key] = params[key];
